@@ -6,6 +6,7 @@ import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
 import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
+import com.mzbloc.elasticJob.dynamic.bean.DynamicJob;
 import com.mzbloc.elasticJob.dynamic.bean.MyJob;
 import com.mzbloc.elasticJob.listener.ElasticJobListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,16 @@ public class ElasticJobHandler {
                 .overwrite(true).build();
 
         new SpringJobScheduler(new MyJob(), zookeeperRegistryCenter, jobConfig, elasticJobListener).init();
+    }
+
+    /**
+     * 添加一个定时任务
+     *
+     * @param dynamicJob   动态任务对象
+     */
+    public void addJob(DynamicJob dynamicJob) {
+        addJob(dynamicJob.getJobName(),
+                dynamicJob.getCron(), dynamicJob.getShardingTotalCount(),
+                dynamicJob.getId(),dynamicJob.getShardingItemParameters());
     }
 }
