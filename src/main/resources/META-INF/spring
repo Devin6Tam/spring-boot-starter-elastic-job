@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.mzbloc.elasticJob.autoconfigure.JobParserAutoConfiguration,\
+com.mzbloc.elasticJob.autoconfigure.JobEventLogDataSourceConfig,
