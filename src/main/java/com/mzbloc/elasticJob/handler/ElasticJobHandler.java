@@ -7,8 +7,8 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.mzbloc.elasticJob.dynamic.bean.DynamicJob;
-import com.mzbloc.elasticJob.dynamic.bean.MyJob;
 import com.mzbloc.elasticJob.listener.ElasticJobListener;
+import com.mzbloc.elasticJob.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,7 +58,7 @@ public class ElasticJobHandler {
         LiteJobConfiguration jobConfig = simpleJobConfigBuilder(jobName, jobImplClass, shardingTotalCount, cron, id,parameters)
                 .overwrite(true).build();
 
-        new SpringJobScheduler(new MyJob(), zookeeperRegistryCenter, jobConfig, elasticJobListener).init();
+        new SpringJobScheduler(ReflectionUtils.newInstance(jobImplClass), zookeeperRegistryCenter, jobConfig, elasticJobListener).init();
     }
 
     /**
