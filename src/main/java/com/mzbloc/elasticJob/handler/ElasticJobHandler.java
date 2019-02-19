@@ -49,12 +49,13 @@ public class ElasticJobHandler {
      * 添加一个定时任务
      *
      * @param jobName            任务名
+     * @param jobImplClass       任务实现类
      * @param cron               表达式
      * @param shardingTotalCount 分片数
      * @param parameters         当前参数
      */
-    public void addJob(String jobName, String cron, Integer shardingTotalCount, String id,String parameters) {
-        LiteJobConfiguration jobConfig = simpleJobConfigBuilder(jobName, SimpleJob.class, shardingTotalCount, cron, id,parameters)
+    public void addJob(String jobName,Class<? extends SimpleJob> jobImplClass, String cron, Integer shardingTotalCount, String id,String parameters) {
+        LiteJobConfiguration jobConfig = simpleJobConfigBuilder(jobName, jobImplClass, shardingTotalCount, cron, id,parameters)
                 .overwrite(true).build();
 
         new SpringJobScheduler(new MyJob(), zookeeperRegistryCenter, jobConfig, elasticJobListener).init();
@@ -66,7 +67,7 @@ public class ElasticJobHandler {
      * @param dynamicJob   动态任务对象
      */
     public void addJob(DynamicJob dynamicJob) {
-        addJob(dynamicJob.getJobName(),
+        addJob(dynamicJob.getJobName(),dynamicJob.getJobImplClass(),
                 dynamicJob.getCron(), dynamicJob.getShardingTotalCount(),
                 dynamicJob.getId(),dynamicJob.getShardingItemParameters());
     }

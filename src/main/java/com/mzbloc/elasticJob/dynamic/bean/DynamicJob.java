@@ -1,6 +1,7 @@
 package com.mzbloc.elasticJob.dynamic.bean;
 
 import com.dangdang.ddframe.job.api.ElasticJob;
+import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import lombok.Data;
 
 /**
@@ -32,4 +33,9 @@ public class DynamicJob implements ElasticJob{
      * 任务分片项目参数 可为空
      */
     private String shardingItemParameters;
+
+    /**
+     * 动态任务实现类
+     */
+    private Class<? extends SimpleJob> jobImplClass;
 }
